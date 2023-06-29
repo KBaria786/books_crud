@@ -1,18 +1,27 @@
 CREATE TABLE author (
     author_id INT,
     author_name VARCHAR(400),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    deleted boolean DEFAULT FALSE,
     CONSTRAINT pk_author PRIMARY KEY (author_id)
 );
 
 CREATE TABLE genre (
     genre_id INT,
     genre_name VARCHAR(400),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    deleted boolean DEFAULT FALSE,
     CONSTRAINT pk_genre PRIMARY KEY (genre_id)
 );
 
 CREATE TABLE publisher (
     publisher_id INT,
     publisher_name VARCHAR(400),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    deleted boolean DEFAULT FALSE,
     CONSTRAINT pk_publisher PRIMARY KEY (publisher_id)
 );
 
