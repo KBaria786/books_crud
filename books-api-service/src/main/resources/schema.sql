@@ -4,6 +4,7 @@ CREATE TABLE author (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     deleted boolean DEFAULT FALSE,
+    CONSTRAINT uk_author_name UNIQUE (author_name),
     CONSTRAINT pk_author PRIMARY KEY (author_id)
 );
 
@@ -13,6 +14,7 @@ CREATE TABLE genre (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     deleted boolean DEFAULT FALSE,
+    CONSTRAINT uk_genre_name UNIQUE (genre_name),
     CONSTRAINT pk_genre PRIMARY KEY (genre_id)
 );
 
@@ -22,17 +24,18 @@ CREATE TABLE publisher (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     deleted boolean DEFAULT FALSE,
+    CONSTRAINT uk_publisher_name UNIQUE (publisher_name),
     CONSTRAINT pk_publisher PRIMARY KEY (publisher_id)
 );
 
-CREATE TABLE review (
-	review_id INT,
-    customer_email VARCHAR(350),
-    rating DECIMAL(9,2),
-    review_title VARCHAR(50),
-    review_description VARCHAR(200),
-    CONSTRAINT pk_review PRIMARY KEY (review_id)
-);
+--CREATE TABLE review (
+--	review_id INT,
+--    customer_email VARCHAR(350),
+--    rating DECIMAL(9,2),
+--    review_title VARCHAR(50),
+--    review_description VARCHAR(200),
+--    CONSTRAINT pk_review PRIMARY KEY (review_id)
+--);
 
 create table book (
     book_id INT,
@@ -45,6 +48,7 @@ create table book (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     deleted boolean DEFAULT FALSE,
+    CONSTRAINT uk_isbn13 UNIQUE (isbn13),
     CONSTRAINT pk_book PRIMARY KEY (book_id),
     CONSTRAINT fk_book_pub FOREIGN KEY (publisher_id) REFERENCES publisher (publisher_id)
 );
@@ -66,10 +70,10 @@ create table book_genre (
     CONSTRAINT fk_bg_genre FOREIGN KEY (genre_id) REFERENCES genre (genre_id)
 );
 
-create table book_review (
-	book_id INT,
-    review_id INT,
-    CONSTRAINT pk_bookreview PRIMARY KEY (book_id, review_id),
-    CONSTRAINT fk_br_book FOREIGN KEY (book_id) REFERENCES book (book_id),
-    CONSTRAINT fk_br_review FOREIGN KEY (review_id) REFERENCES review (review_id)
-);
+--create table book_review (
+--	book_id INT,
+--    review_id INT,
+--    CONSTRAINT pk_bookreview PRIMARY KEY (book_id, review_id),
+--    CONSTRAINT fk_br_book FOREIGN KEY (book_id) REFERENCES book (book_id),
+--    CONSTRAINT fk_br_review FOREIGN KEY (review_id) REFERENCES review (review_id)
+--);

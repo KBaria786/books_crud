@@ -1,10 +1,11 @@
 package com.bookstore.booksapiservice.controller;
 
+import com.bookstore.booksapiservice.dto.BookSaveDto;
 import com.bookstore.booksapiservice.dto.BookSearchDto;
-import com.bookstore.booksapiservice.model.Author;
 import com.bookstore.booksapiservice.model.Book;
 import com.bookstore.booksapiservice.service.BookService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,11 @@ public class BooksController {
 
     private BookService bookService;
 
+    @PostMapping()
+    public ResponseEntity<Book> save(@RequestBody BookSaveDto bookSaveDto) {
+        return new ResponseEntity<>(bookService.save(bookSaveDto), HttpStatus.CREATED);
+    }
+    
     @GetMapping()
     public ResponseEntity<List<Book>> findAll() {
         return ResponseEntity.ok().body(bookService.findAll());
@@ -64,6 +70,17 @@ public class BooksController {
                 .build();
 
         return ResponseEntity.ok().body(bookService.search(bookSearchDto));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Book> update(@PathVariable("id") Integer id, @RequestBody BookSaveDto bookSaveDto) {
+        return new ResponseEntity<>(bookService.update(id, bookSaveDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> update(@PathVariable("id") Integer id) {
+        bookService.softDelete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

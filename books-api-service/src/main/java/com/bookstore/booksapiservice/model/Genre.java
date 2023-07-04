@@ -20,7 +20,8 @@ import java.time.Instant;
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_sequence")
+    @SequenceGenerator(name = "genre_sequence", sequenceName = "genre_sequence", initialValue = 21, allocationSize = 1)
     @Column(name = "genre_id")
     private Integer id;
     private String genreName;

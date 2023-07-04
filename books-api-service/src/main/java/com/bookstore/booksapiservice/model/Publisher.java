@@ -20,7 +20,8 @@ import java.time.Instant;
 public class Publisher {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "publisher_sequence")
+    @SequenceGenerator(name = "publisher_sequence", sequenceName = "publisher_sequence", initialValue = 51, allocationSize = 1)
     @Column(name = "publisher_id")
     private Integer id;
     private String publisherName;

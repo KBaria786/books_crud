@@ -20,7 +20,8 @@ import java.time.Instant;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_sequence")
+    @SequenceGenerator(name = "author_sequence", sequenceName = "author_sequence", initialValue = 176, allocationSize = 1)
     @Column(name = "author_id")
     private Integer id;
     private String authorName;
