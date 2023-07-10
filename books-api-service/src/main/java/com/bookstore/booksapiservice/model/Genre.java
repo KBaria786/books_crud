@@ -2,6 +2,7 @@ package com.bookstore.booksapiservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class Genre {
     @SequenceGenerator(name = "genre_sequence", sequenceName = "genre_sequence", initialValue = 21, allocationSize = 1)
     @Column(name = "genre_id")
     private Integer id;
+
+    @NotBlank(message = "genre name is required")
     private String genreName;
 
     @CreationTimestamp
