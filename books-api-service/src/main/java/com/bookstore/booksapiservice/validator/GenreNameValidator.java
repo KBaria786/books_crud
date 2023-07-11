@@ -16,8 +16,8 @@ public class GenreNameValidator implements ConstraintValidator<GenreNameConstrai
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !genreRepository.findByGenreName().isPresent();
+    public boolean isValid(String genreName, ConstraintValidatorContext constraintValidatorContext) {
+        return !genreRepository.findByGenreName(genreName).isPresent();
     }
 
 }

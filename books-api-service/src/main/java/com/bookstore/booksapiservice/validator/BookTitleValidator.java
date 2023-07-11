@@ -15,7 +15,7 @@ public class BookTitleValidator implements ConstraintValidator<BookTitleConstrai
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !bookRepository.findByTitle().isPresent();
+    public boolean isValid(String title, ConstraintValidatorContext constraintValidatorContext) {
+        return !bookRepository.findByTitle(title).isPresent();
     }
 }

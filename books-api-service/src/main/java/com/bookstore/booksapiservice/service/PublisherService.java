@@ -3,19 +3,26 @@ package com.bookstore.booksapiservice.service;
 import com.bookstore.booksapiservice.dto.PublisherSaveDto;
 import com.bookstore.booksapiservice.model.Publisher;
 import com.bookstore.booksapiservice.repository.PublisherRepository;
+import com.bookstore.booksapiservice.validator.group.OnSave;
+import com.bookstore.booksapiservice.validator.group.OnUpdate;
+
 import io.micrometer.common.util.StringUtils;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Validated
 public class PublisherService {
 
     private PublisherRepository publisherRepository;
 
-    public Publisher save(PublisherSaveDto publisherSaveDto) {
+    @Validated(OnSave.class)
+    public Publisher save(@Valid PublisherSaveDto publisherSaveDto) {
         Publisher publisherToSave = Publisher.builder()
                 .publisherName(publisherSaveDto.getPublisherName())
                 .build();
@@ -31,7 +38,8 @@ public class PublisherService {
         return publisherRepository.findById(id).orElseThrow(null);
     }
 
-    public Publisher update(Integer id, PublisherSaveDto publisherSaveDto) {
+    @Validated(OnUpdate.class)
+    public Publisher update(Integer id, @Valid PublisherSaveDto publisherSaveDto) {
         Publisher publisher = findById(id);
         Publisher publisherToSave = Publisher.builder()
                 .publisherName(StringUtils.isNotEmpty(publisherSaveDto.getPublisherName()) ? publisherSaveDto.getPublisherName() : publisher.getPublisherName())

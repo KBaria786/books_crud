@@ -16,8 +16,8 @@ public class AuthorNameValidator implements ConstraintValidator<AuthorNameConstr
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !authorRepository.findByAuthorName().isPresent();
+    public boolean isValid(String authorName, ConstraintValidatorContext constraintValidatorContext) {
+        return !authorRepository.findByAuthorName(authorName).isPresent();
     }
 
 }

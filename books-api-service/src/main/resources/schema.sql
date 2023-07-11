@@ -8,6 +8,10 @@ CREATE TABLE author (
     CONSTRAINT pk_author PRIMARY KEY (author_id)
 );
 
+CREATE SEQUENCE author_sequence 
+START WITH 176
+INCREMENT BY 1;
+
 CREATE TABLE genre (
     genre_id INT,
     genre_name VARCHAR(400),
@@ -18,6 +22,10 @@ CREATE TABLE genre (
     CONSTRAINT pk_genre PRIMARY KEY (genre_id)
 );
 
+CREATE SEQUENCE genre_sequence 
+START WITH 21
+INCREMENT BY 1;
+
 CREATE TABLE publisher (
     publisher_id INT,
     publisher_name VARCHAR(400),
@@ -27,6 +35,10 @@ CREATE TABLE publisher (
     CONSTRAINT uk_publisher_name UNIQUE (publisher_name),
     CONSTRAINT pk_publisher PRIMARY KEY (publisher_id)
 );
+
+CREATE SEQUENCE publisher_sequence 
+START WITH 51
+INCREMENT BY 1;
 
 --CREATE TABLE review (
 --	review_id INT,
@@ -52,6 +64,10 @@ create table book (
     CONSTRAINT pk_book PRIMARY KEY (book_id),
     CONSTRAINT fk_book_pub FOREIGN KEY (publisher_id) REFERENCES publisher (publisher_id)
 );
+
+CREATE SEQUENCE book_sequence 
+START WITH 183 
+INCREMENT BY 1;
 
 
 CREATE TABLE book_author (

@@ -3,20 +3,27 @@ package com.bookstore.booksapiservice.service;
 import com.bookstore.booksapiservice.dto.AuthorSaveDto;
 import com.bookstore.booksapiservice.model.Author;
 import com.bookstore.booksapiservice.repository.AuthorRepository;
+import com.bookstore.booksapiservice.validator.group.OnSave;
+import com.bookstore.booksapiservice.validator.group.OnUpdate;
+
 import io.micrometer.common.util.StringUtils;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
+@Validated
 public class AuthorService {
 
     private AuthorRepository authorRepository;
 
-    public Author save(AuthorSaveDto authorSaveDto) {
+    @Validated(OnSave.class)
+    public Author save(@Valid AuthorSaveDto authorSaveDto) {
         Author authorToSave = Author.builder()
                 .authorName(authorSaveDto.getAuthorName())
                 .build();
@@ -36,7 +43,8 @@ public class AuthorService {
         return authorIds.stream().map(id -> findById(id)).toList();
     }
 
-    public Author update(Integer id, AuthorSaveDto authorSaveDto) {
+    @Validated(OnUpdate.class)
+    public Author update(Integer id, @Valid AuthorSaveDto authorSaveDto) {
         Author author = findById(id);
         Author authorToSave = Author.builder()
                 .authorName(StringUtils.isNotEmpty(authorSaveDto.getAuthorName()) ? authorSaveDto.getAuthorName() : author.getAuthorName())

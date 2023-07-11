@@ -1,8 +1,23 @@
 package com.bookstore.booksapiservice.model;
 
-import com.bookstore.booksapiservice.validator.group.OnSave;
-import com.bookstore.booksapiservice.validator.group.OnUpdate;
-import jakarta.persistence.*;
+import java.sql.Date;
+import java.time.Instant;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,12 +27,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.sql.Date;
-import java.time.Instant;
-import java.util.List;
 
 @Entity
 @Table(name = "book")
@@ -33,8 +42,9 @@ public class Book {
     @Column(name = "book_id")
     private Integer id;
 
+    //123456789-0
     @NotBlank(message = "ISBN is required")
-    @Pattern(regexp = "/d{9}-/d", message = "invalid ISBN")
+    @Pattern(regexp = "^\\d{9}-\\d$", message = "invalid ISBN")
     private String isbn13;
 
     @NotBlank(message = "book title is required")

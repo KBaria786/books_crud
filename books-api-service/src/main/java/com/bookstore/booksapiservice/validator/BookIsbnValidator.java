@@ -16,7 +16,7 @@ public class BookIsbnValidator implements ConstraintValidator<BookIsbnConstraint
     }
 
     @Override
-    public boolean isValid(String isbn, ConstraintValidatorContext constraintValidatorContext) {
-        return !bookRepository.findByIsbn13().isPresent();
+    public boolean isValid(String isbn13, ConstraintValidatorContext constraintValidatorContext) {
+        return !bookRepository.findByIsbn13(isbn13).isPresent();
     }
 }

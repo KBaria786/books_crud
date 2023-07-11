@@ -8,15 +8,21 @@ import com.bookstore.booksapiservice.model.Genre;
 import com.bookstore.booksapiservice.model.Publisher;
 import com.bookstore.booksapiservice.repository.BookRepository;
 import com.bookstore.booksapiservice.repository.specification.BookSpecification;
+import com.bookstore.booksapiservice.validator.group.OnSave;
+import com.bookstore.booksapiservice.validator.group.OnUpdate;
+
 import io.micrometer.common.util.StringUtils;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
+@Validated
 public class BookService {
 
     private BookRepository bookRepository;
@@ -24,7 +30,8 @@ public class BookService {
     private AuthorService authorService;
     private GenreService genreService;
 
-    public Book save(BookSaveDto bookSaveDto) {
+    @Validated(OnSave.class)
+    public Book save(@Valid BookSaveDto bookSaveDto) {
         Publisher publisher = publisherService.findById(bookSaveDto.getPublisherId());
         List<Author> authors = authorService.findAllById(bookSaveDto.getAuthors());
         List<Genre> genres = genreService.findAllById(bookSaveDto.getGenres());
@@ -55,7 +62,8 @@ public class BookService {
         return bookRepository.findAll(BookSpecification.search(bookSearchDto));
     }
 
-    public Book update(Integer id, BookSaveDto bookSaveDto) {
+    @Validated(OnUpdate.class)
+    public Book update(Integer id, @Valid BookSaveDto bookSaveDto) {
         Book book = findById(id);
         Publisher publisher = bookSaveDto.getPublisherId() != null ? publisherService.findById(bookSaveDto.getPublisherId()) : null;
         List<Author> authors = bookSaveDto.getAuthors().size() > 0 ? authorService.findAllById(bookSaveDto.getAuthors()) : List.of();

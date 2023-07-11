@@ -16,7 +16,7 @@ public class PublisherNameValidator implements ConstraintValidator<PublisherName
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !publisherRepository.findByPublisherName().isPresent();
+    public boolean isValid(String publisherName, ConstraintValidatorContext constraintValidatorContext) {
+        return !publisherRepository.findByPublisherName(publisherName).isPresent();
     }
 }
