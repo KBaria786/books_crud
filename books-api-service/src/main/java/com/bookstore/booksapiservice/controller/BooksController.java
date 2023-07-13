@@ -84,11 +84,12 @@ public class BooksController {
 
     @PutMapping("{id}")
     public ResponseEntity<Book> update(@PathVariable("id") Integer id, @RequestBody BookSaveDto bookSaveDto) {
+        bookSaveDto.setId(id);
         return new ResponseEntity<>(bookService.update(id, bookSaveDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> softDelete(@PathVariable("id") Integer id) {
         bookService.softDelete(id);
         return ResponseEntity.noContent().build();
     }

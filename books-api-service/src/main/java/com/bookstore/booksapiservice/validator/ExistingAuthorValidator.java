@@ -18,7 +18,7 @@ public class ExistingAuthorValidator implements ConstraintValidator<ExistingAuth
 
 	@Override
 	public boolean isValid(Integer authorId, ConstraintValidatorContext context) {
-		return authorRepository.existsById(authorId);
+		return authorId != null ? authorRepository.existsById(authorId) : true;
 	}
 
 }

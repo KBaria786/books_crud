@@ -27,6 +27,7 @@ public class Author {
     private Integer id;
 
     @NotBlank(message = "author name is required")
+    @Column(unique = true)
     private String authorName;
 
     @CreationTimestamp

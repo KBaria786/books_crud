@@ -27,6 +27,7 @@ public class Publisher {
     private Integer id;
 
     @NotBlank(message = "publisher name is required")
+    @Column(unique = true)
     private String publisherName;
 
     @CreationTimestamp

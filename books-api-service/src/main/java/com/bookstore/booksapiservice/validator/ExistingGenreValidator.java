@@ -18,7 +18,7 @@ public class ExistingGenreValidator implements ConstraintValidator<ExistingGenre
 
 	@Override
 	public boolean isValid(Integer genreId, ConstraintValidatorContext context) {
-		return genreRepository.existsById(genreId);
+		return genreId != null ? genreRepository.existsById(genreId) : true;
 	}
 
 }

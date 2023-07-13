@@ -23,7 +23,7 @@ public class GenreService {
     private GenreRepository genreRepository;
 
     @Validated(OnSave.class)
-    public Genre save(GenreSaveDto genreSaveDto) {
+    public Genre save(@Valid GenreSaveDto genreSaveDto) {
         Genre genreToSave = Genre.builder()
                 .genreName(genreSaveDto.getGenreName())
                 .build();

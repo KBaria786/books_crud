@@ -43,11 +43,12 @@ public class GenreController {
 
     @PutMapping("{id}")
     public ResponseEntity<Genre> update(@PathVariable("id") Integer id, @RequestBody GenreSaveDto genreSaveDto) {
+        genreSaveDto.setId(id);
         return new ResponseEntity<>(genreService.update(id, genreSaveDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> softDelete(@PathVariable("id") Integer id) {
         genreService.softDelete(id);
         return ResponseEntity.noContent().build();
     }

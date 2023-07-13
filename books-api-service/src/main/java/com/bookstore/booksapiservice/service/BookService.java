@@ -10,11 +10,11 @@ import com.bookstore.booksapiservice.repository.BookRepository;
 import com.bookstore.booksapiservice.repository.specification.BookSpecification;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
-
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -63,11 +63,11 @@ public class BookService {
     }
 
     @Validated(OnUpdate.class)
-    public Book update(Integer id, @Valid BookSaveDto bookSaveDto) {
+    public Book update(Integer id,@Valid BookSaveDto bookSaveDto) {
         Book book = findById(id);
         Publisher publisher = bookSaveDto.getPublisherId() != null ? publisherService.findById(bookSaveDto.getPublisherId()) : null;
-        List<Author> authors = bookSaveDto.getAuthors().size() > 0 ? authorService.findAllById(bookSaveDto.getAuthors()) : List.of();
-        List<Genre> genres = bookSaveDto.getGenres().size() > 0 ? genreService.findAllById(bookSaveDto.getGenres()) : List.of();
+        List<Author> authors = !CollectionUtils.isEmpty(bookSaveDto.getAuthors()) ? authorService.findAllById(bookSaveDto.getAuthors()) : List.of();
+        List<Genre> genres = !CollectionUtils.isEmpty(bookSaveDto.getGenres()) ? genreService.findAllById(bookSaveDto.getGenres()) : List.of();
 
         Book bookToSave = Book.builder()
                 .id(id)

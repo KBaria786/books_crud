@@ -4,20 +4,10 @@ import java.sql.Date;
 import java.time.Instant;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,12 +32,13 @@ public class Book {
     @Column(name = "book_id")
     private Integer id;
 
-    //123456789-0
     @NotBlank(message = "ISBN is required")
     @Pattern(regexp = "^\\d{9}-\\d$", message = "invalid ISBN")
+    @Column(unique = true)
     private String isbn13;
 
     @NotBlank(message = "book title is required")
+    @Column(unique = true)
     private String title;
 
     @NotNull(message = "number of pages is required")
@@ -60,12 +51,12 @@ public class Book {
     @NotNull(message = "publication date is required")
     private Date publicationDate;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "publisher_id")
     @Valid
     private Publisher publisher;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
@@ -73,7 +64,7 @@ public class Book {
     @Valid
     private List<Author> authors;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")

@@ -43,11 +43,12 @@ public class PublisherController {
 
     @PutMapping("{id}")
     public ResponseEntity<Publisher> update(@PathVariable("id") Integer id, @RequestBody PublisherSaveDto publisherSaveDto) {
+        publisherSaveDto.setId(id);
         return new ResponseEntity<>(publisherService.update(id, publisherSaveDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> softDelete(@PathVariable("id") Integer id) {
         publisherService.softDelete(id);
         return ResponseEntity.noContent().build();
     }

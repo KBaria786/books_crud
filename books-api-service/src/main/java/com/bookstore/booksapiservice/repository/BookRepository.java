@@ -12,6 +12,6 @@ public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecifi
 
     public Optional<Book> findByIsbn13(String isbn13);
 
-    public Optional<Book> findByTitle(String title);
+    public Optional<Book> findByTitleIgnoreCase(String title);
 
 }

@@ -18,7 +18,7 @@ public class ExistingPublisherValidator implements ConstraintValidator<ExistingP
 	
 	@Override
 	public boolean isValid(Integer publisherId, ConstraintValidatorContext context) {
-		return publisherRepository.existsById(publisherId);
+		return publisherId != null ? publisherRepository.existsById(publisherId) : true;
 	}
 	
 }
