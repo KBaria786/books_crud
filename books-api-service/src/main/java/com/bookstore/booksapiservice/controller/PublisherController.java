@@ -52,5 +52,11 @@ public class PublisherController {
         publisherService.softDelete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> hardDelete(@PathVariable("id") Integer id) {
+        publisherService.hardDelete(id);
+        return ResponseEntity.noContent().build();
+    }
     
 }

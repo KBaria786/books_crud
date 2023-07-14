@@ -56,7 +56,7 @@ create table book (
     isbn13 VARCHAR(13) NOT NULL,
     num_pages INT NOT NULL,
     publication_date DATE NOT NULL,
-    publisher_id INT NOT NULL,
+    publisher_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
     deleted boolean DEFAULT FALSE,

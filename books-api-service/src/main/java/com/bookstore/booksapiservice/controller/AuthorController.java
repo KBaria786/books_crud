@@ -44,4 +44,10 @@ public class AuthorController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> hardDelete(@PathVariable("id") Integer id) {
+        authorService.hardDelete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

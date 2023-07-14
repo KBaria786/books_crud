@@ -6,6 +6,7 @@ import com.bookstore.booksapiservice.repository.PublisherRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,12 @@ public class PublisherService {
         Publisher publisher = findById(id);
         publisher.setDeleted(true);
         publisherRepository.save(publisher);
+    }
+
+    @Transactional
+    public void hardDelete(Integer id) {
+        publisherRepository.updateBookPublishers(id);
+        publisherRepository.deleteById(id);
     }
 
 }

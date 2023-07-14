@@ -52,5 +52,11 @@ public class GenreController {
         genreService.softDelete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> hardDelete(@PathVariable("id") Integer id) {
+        genreService.hardDelete(id);
+        return ResponseEntity.noContent().build();
+    }
     
 }

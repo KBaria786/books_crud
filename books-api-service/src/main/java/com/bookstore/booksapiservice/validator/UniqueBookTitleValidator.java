@@ -6,6 +6,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 public class UniqueBookTitleValidator implements ConstraintValidator<UniqueBookTitleConstraint, BookSaveDto> {
 
@@ -18,8 +20,8 @@ public class UniqueBookTitleValidator implements ConstraintValidator<UniqueBookT
 
     @Override
     public boolean isValid(BookSaveDto bookSaveDto, ConstraintValidatorContext constraintValidatorContext) {
-        return !bookRepository.findByTitleIgnoreCase(bookSaveDto.getTitle())
-                .filter(book -> book.getId() != bookSaveDto.getId())
-                .isPresent();
+        return bookRepository.findByTitleIgnoreCase(bookSaveDto.getTitle())
+                .filter(book -> !book.getId().equals(bookSaveDto.getId()))
+                .isEmpty();
     }
 }

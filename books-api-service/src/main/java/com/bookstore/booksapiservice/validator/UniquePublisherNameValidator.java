@@ -18,8 +18,8 @@ public class UniquePublisherNameValidator implements ConstraintValidator<UniqueP
 
     @Override
     public boolean isValid(PublisherSaveDto publisherSaveDto, ConstraintValidatorContext constraintValidatorContext) {
-        return !publisherRepository.findByPublisherNameIgnoreCase(publisherSaveDto.getPublisherName())
-                .filter(publisher -> publisher.getId() != publisherSaveDto.getId())
-                .isPresent();
+        return publisherRepository.findByPublisherNameIgnoreCase(publisherSaveDto.getPublisherName())
+                .filter(publisher -> !publisher.getId().equals(publisherSaveDto.getId()))
+                .isEmpty();
     }
 }

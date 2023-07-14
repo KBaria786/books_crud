@@ -5,7 +5,6 @@ import com.bookstore.booksapiservice.model.Author;
 import com.bookstore.booksapiservice.repository.AuthorRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
-
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -15,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -40,8 +40,10 @@ public class AuthorService {
         return authorRepository.findById(id).orElseThrow(null);
     }
 
-    public List<Author> findAllById(Set<Integer> authorIds) {
-        return authorIds.stream().map(id -> findById(id)).toList();
+    public Set<Author> findAllById(Set<Integer> authorIds) {
+        return authorIds.stream()
+                .map(this::findById)
+                .collect(Collectors.toSet());
     }
 
     @Validated(OnUpdate.class)
@@ -58,6 +60,12 @@ public class AuthorService {
         Author author = findById(id);
         author.setDeleted(true);
         authorRepository.save(author);
+    }
+
+    @Transactional
+    public void hardDelete(Integer id) {
+        authorRepository.deleteFromBookAuthors(id);
+        authorRepository.deleteById(id);
     }
 
 }

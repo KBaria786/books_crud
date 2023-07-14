@@ -11,6 +11,7 @@ import com.bookstore.booksapiservice.repository.specification.BookSpecification;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -33,8 +35,8 @@ public class BookService {
     @Validated(OnSave.class)
     public Book save(@Valid BookSaveDto bookSaveDto) {
         Publisher publisher = publisherService.findById(bookSaveDto.getPublisherId());
-        List<Author> authors = authorService.findAllById(bookSaveDto.getAuthors());
-        List<Genre> genres = genreService.findAllById(bookSaveDto.getGenres());
+        Set<Author> authors = authorService.findAllById(bookSaveDto.getAuthors());
+        Set<Genre> genres = genreService.findAllById(bookSaveDto.getGenres());
 
         Book bookToSave = Book.builder()
                 .title(bookSaveDto.getTitle())
@@ -66,8 +68,8 @@ public class BookService {
     public Book update(Integer id,@Valid BookSaveDto bookSaveDto) {
         Book book = findById(id);
         Publisher publisher = bookSaveDto.getPublisherId() != null ? publisherService.findById(bookSaveDto.getPublisherId()) : null;
-        List<Author> authors = !CollectionUtils.isEmpty(bookSaveDto.getAuthors()) ? authorService.findAllById(bookSaveDto.getAuthors()) : List.of();
-        List<Genre> genres = !CollectionUtils.isEmpty(bookSaveDto.getGenres()) ? genreService.findAllById(bookSaveDto.getGenres()) : List.of();
+        Set<Author> authors = !CollectionUtils.isEmpty(bookSaveDto.getAuthors()) ? authorService.findAllById(bookSaveDto.getAuthors()) : Set.of();
+        Set<Genre> genres = !CollectionUtils.isEmpty(bookSaveDto.getGenres()) ? genreService.findAllById(bookSaveDto.getGenres()) : Set.of();
 
         Book bookToSave = Book.builder()
                 .id(id)
@@ -88,6 +90,13 @@ public class BookService {
         Book book = findById(id);
         book.setDeleted(true);
         bookRepository.save(book);
+    }
+
+    @Transactional
+    public void hardDelete(Integer id) {
+        bookRepository.deleteFromBookAuthors(id);
+        bookRepository.deleteFromBookGenres(id);
+        bookRepository.deleteById(id);
     }
 
 }

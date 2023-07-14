@@ -5,8 +5,8 @@ import com.bookstore.booksapiservice.model.Genre;
 import com.bookstore.booksapiservice.repository.GenreRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
-
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,8 +40,10 @@ public class GenreService {
         return genreRepository.findById(id).orElseThrow(null);
     }
 
-    public List<Genre> findAllById(Set<Integer> genreIds) {
-        return genreIds.stream().map(id -> findById(id)).toList();
+    public Set<Genre> findAllById(Set<Integer> genreIds) {
+        return genreIds.stream()
+                .map(this::findById)
+                .collect(Collectors.toSet());
     }
 
     @Validated(OnUpdate.class)
@@ -57,6 +60,12 @@ public class GenreService {
         Genre genre = findById(id);
         genre.setDeleted(true);
         genreRepository.save(genre);
+    }
+
+    @Transactional
+    public void hardDelete(Integer id) {
+        genreRepository.deleteFromBookGenres(id);
+        genreRepository.deleteById(id);
     }
 
 }

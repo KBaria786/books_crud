@@ -1,7 +1,6 @@
 package com.bookstore.booksapiservice.validator;
 
 import com.bookstore.booksapiservice.repository.AuthorRepository;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
@@ -18,7 +17,7 @@ public class ExistingAuthorValidator implements ConstraintValidator<ExistingAuth
 
 	@Override
 	public boolean isValid(Integer authorId, ConstraintValidatorContext context) {
-		return authorId != null ? authorRepository.existsById(authorId) : true;
+		return authorId == null || authorRepository.existsById(authorId);
 	}
 
 }

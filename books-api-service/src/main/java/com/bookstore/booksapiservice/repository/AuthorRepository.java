@@ -13,4 +13,8 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
 
     public Optional<Author> findByAuthorNameIgnoreCase(String authorName);
 
+    @Modifying
+    @Query(value = "delete from book_author where author_id = :authorId", nativeQuery = true)
+    public int deleteFromBookAuthors(int authorId);
+
 }
