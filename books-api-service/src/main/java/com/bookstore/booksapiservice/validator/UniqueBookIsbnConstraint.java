@@ -6,13 +6,11 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = BookIsbnValidator.class)
-@Target({ElementType.FIELD})
+@Constraint(validatedBy = UniqueBookIsbnValidator.class)
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BookIsbnConstraint {
-
+public @interface UniqueBookIsbnConstraint {
     String message() default "invalid isbn";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-
 }

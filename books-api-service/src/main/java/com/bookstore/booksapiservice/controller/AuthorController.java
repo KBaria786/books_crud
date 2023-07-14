@@ -34,12 +34,14 @@ public class AuthorController {
 
     @PutMapping("{id}")
     public ResponseEntity<Author> update(@PathVariable("id") Integer id, @RequestBody AuthorSaveDto authorSaveDto) {
+        authorSaveDto.setId(id);
         return new ResponseEntity<>(authorService.update(id, authorSaveDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> softDelete(@PathVariable("id") Integer id) {
         authorService.softDelete(id);
         return ResponseEntity.noContent().build();
     }
+
 }

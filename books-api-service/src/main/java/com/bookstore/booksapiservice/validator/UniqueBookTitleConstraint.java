@@ -6,12 +6,12 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = AuthorNameValidator.class)
-@Target({ElementType.FIELD})
+@Constraint(validatedBy = UniqueBookTitleValidator.class)
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GenreNameConstraint {
+public @interface UniqueBookTitleConstraint {
 
-    String message() default "invalid genre name";
+    String message() default "invalid title";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

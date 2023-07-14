@@ -27,6 +27,7 @@ public class Genre {
     private Integer id;
 
     @NotBlank(message = "genre name is required")
+    @Column(unique = true)
     private String genreName;
 
     @CreationTimestamp

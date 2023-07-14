@@ -1,17 +1,27 @@
 package com.bookstore.booksapiservice.controller;
 
+import java.sql.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bookstore.booksapiservice.dto.BookSaveDto;
 import com.bookstore.booksapiservice.dto.BookSearchDto;
 import com.bookstore.booksapiservice.model.Book;
 import com.bookstore.booksapiservice.service.BookService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.Set;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("books")
@@ -74,11 +84,12 @@ public class BooksController {
 
     @PutMapping("{id}")
     public ResponseEntity<Book> update(@PathVariable("id") Integer id, @RequestBody BookSaveDto bookSaveDto) {
+        bookSaveDto.setId(id);
         return new ResponseEntity<>(bookService.update(id, bookSaveDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> softDelete(@PathVariable("id") Integer id) {
         bookService.softDelete(id);
         return ResponseEntity.noContent().build();
     }

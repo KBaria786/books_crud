@@ -1,8 +1,13 @@
 package com.bookstore.booksapiservice.model;
 
-import com.bookstore.booksapiservice.validator.group.OnSave;
-import com.bookstore.booksapiservice.validator.group.OnUpdate;
+import java.sql.Date;
+import java.time.Instant;
+import java.util.List;
+
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -12,12 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.sql.Date;
-import java.time.Instant;
-import java.util.List;
 
 @Entity
 @Table(name = "book")
@@ -34,10 +33,12 @@ public class Book {
     private Integer id;
 
     @NotBlank(message = "ISBN is required")
-    @Pattern(regexp = "/d{9}-/d", message = "invalid ISBN")
+    @Pattern(regexp = "^\\d{9}-\\d$", message = "invalid ISBN")
+    @Column(unique = true)
     private String isbn13;
 
     @NotBlank(message = "book title is required")
+    @Column(unique = true)
     private String title;
 
     @NotNull(message = "number of pages is required")
@@ -50,12 +51,12 @@ public class Book {
     @NotNull(message = "publication date is required")
     private Date publicationDate;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "publisher_id")
     @Valid
     private Publisher publisher;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
@@ -63,7 +64,7 @@ public class Book {
     @Valid
     private List<Author> authors;
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
