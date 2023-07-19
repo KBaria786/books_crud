@@ -6,6 +6,7 @@ import com.bookstore.booksapiservice.repository.AuthorRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,8 @@ public class AuthorService {
     }
 
     public Author findById(int id) {
-        return authorRepository.findById(id).orElseThrow(null);
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("author with id %d not found", id)));
     }
 
     public Set<Author> findAllById(Set<Integer> authorIds) {
@@ -64,8 +66,12 @@ public class AuthorService {
 
     @Transactional
     public void hardDelete(Integer id) {
-        authorRepository.deleteFromBookAuthors(id);
-        authorRepository.deleteById(id);
+        if(authorRepository.existsById(id)) {
+            authorRepository.deleteFromBookAuthors(id);
+            authorRepository.deleteById(id);
+        }else {
+            throw new EntityNotFoundException(String.format("author with id %d not found", id));
+        }
     }
 
 }

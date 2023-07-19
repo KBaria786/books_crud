@@ -11,6 +11,7 @@ import com.bookstore.booksapiservice.repository.specification.BookSpecification;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -57,7 +58,8 @@ public class BookService {
     }
 
     public Book findById(int id) {
-        return bookRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Book not found"));
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("book with id %d not found", id)));
     }
 
     public List<Book> search(BookSearchDto bookSearchDto) {
@@ -94,9 +96,13 @@ public class BookService {
 
     @Transactional
     public void hardDelete(Integer id) {
-        bookRepository.deleteFromBookAuthors(id);
-        bookRepository.deleteFromBookGenres(id);
-        bookRepository.deleteById(id);
+        if(bookRepository.existsById(id)) {
+            bookRepository.deleteFromBookAuthors(id);
+            bookRepository.deleteFromBookGenres(id);
+            bookRepository.deleteById(id);
+        }else {
+            throw new EntityNotFoundException(String.format("book with id %d not found", id));
+        }
     }
 
 }

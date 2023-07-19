@@ -6,6 +6,7 @@ import com.bookstore.booksapiservice.repository.PublisherRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,8 @@ public class PublisherService {
     }
 
     public Publisher findById(int id) {
-        return publisherRepository.findById(id).orElseThrow(null);
+        return publisherRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("publisher with id %d not found", id)));
     }
 
     @Validated(OnUpdate.class)
@@ -56,8 +58,12 @@ public class PublisherService {
 
     @Transactional
     public void hardDelete(Integer id) {
-        publisherRepository.updateBookPublishers(id);
-        publisherRepository.deleteById(id);
+        if(publisherRepository.existsById(id)) {
+            publisherRepository.updateBookPublishers(id);
+            publisherRepository.deleteById(id);
+        }else {
+            throw new EntityNotFoundException(String.format("publisher with id %d not found", id));
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import com.bookstore.booksapiservice.repository.GenreRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,8 @@ public class GenreService {
     }
 
     public Genre findById(int id) {
-        return genreRepository.findById(id).orElseThrow(null);
+        return genreRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("genre with id %d not found", id)));
     }
 
     public Set<Genre> findAllById(Set<Integer> genreIds) {
@@ -64,8 +66,12 @@ public class GenreService {
 
     @Transactional
     public void hardDelete(Integer id) {
-        genreRepository.deleteFromBookGenres(id);
-        genreRepository.deleteById(id);
+        if(genreRepository.existsById(id)) {
+            genreRepository.deleteFromBookGenres(id);
+            genreRepository.deleteById(id);
+        }else {
+            throw new EntityNotFoundException(String.format("genre with id %d not found", id));
+        }
     }
 
 }
