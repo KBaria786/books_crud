@@ -5,7 +5,6 @@ import com.bookstore.booksapiservice.dto.BookSearchDto;
 import com.bookstore.booksapiservice.model.Book;
 import com.bookstore.booksapiservice.service.BookService;
 import io.micrometer.common.util.StringUtils;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,17 +42,17 @@ public class BooksController {
     @GetMapping("search")
     public ResponseEntity<List<Book>> search(@RequestParam(name = "title", required = false) String title,
                                              @RequestParam(name = "isbn13", required = false)
-                                                @Pattern(regexp = "^\\d{9}-\\d$", message = "date should be in yyyy-mm-dd format")
+                                                @Pattern(regexp = "^\\d{9}-\\d$", message = "invalid isbn format")
                                                 String isbn13,
                                              @RequestParam(name = "num_pages", required = false)
-                                                @Digits(integer = 10, fraction = 0, message = "number of pages should be an integer")
-                                                Integer numPages,
+                                                @Pattern(regexp = "^\\d+$", message = "number of pages should be an integer")
+                                                String numPages,
                                              @RequestParam(name = "publication_date", required = false)
                                                 @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "date should be in yyyy-mm-dd format")
                                                 String publicationDate,
                                              @RequestParam(name = "publisher_id", required = false)
-                                                @Digits(integer = 10, fraction = 0, message = "publisher id should be an integer")
-                                                Integer publisherId,
+                                                 @Pattern(regexp = "^\\d+$", message = "publisher id should be an integer")
+                                                 String publisherId,
                                              @RequestParam(name = "publisher_name", required = false) String publisherName,
                                              @RequestParam(name = "author_name", required = false) String authorName,
                                              @RequestParam(name = "genre_name", required = false) String genreName,
@@ -67,9 +66,9 @@ public class BooksController {
         BookSearchDto bookSearchDto = BookSearchDto.builder()
                 .title(title)
                 .isbn13(isbn13)
-                .numPages(numPages)
+                .numPages(StringUtils.isNotBlank(numPages) ? Integer.valueOf(numPages) : null)
                 .publicationDate(StringUtils.isNotBlank(publicationDate) ? Date.valueOf(publicationDate) : null)
-                .publisherId(publisherId)
+                .publisherId(StringUtils.isNotBlank(publisherId) ? Integer.valueOf(publisherId) : null)
                 .publisherName(publisherName)
                 .authorName(authorName)
                 .genreName(genreName)
