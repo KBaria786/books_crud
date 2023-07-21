@@ -50,19 +50,24 @@ public class BookSpecification {
 
             // like queries
             if(StringUtils.isNotBlank(bookSearchDto.getTitleLike())) {
-                predicates.add(criteriaBuilder.like(root.get(Book_.title), "%" + bookSearchDto.getTitleLike() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Book_.title)),
+                        "%" + bookSearchDto.getTitleLike().toLowerCase() + "%"));
             }
             if(StringUtils.isNotBlank(bookSearchDto.getIsbn13Like())) {
-                predicates.add(criteriaBuilder.like(root.get(Book_.isbn13), "%" + bookSearchDto.getIsbn13Like() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Book_.isbn13)),
+                        "%" + bookSearchDto.getIsbn13Like().toLowerCase() + "%"));
             }
             if(StringUtils.isNotBlank(bookSearchDto.getPublisherNameLike())) {
-                predicates.add(criteriaBuilder.like(publisherJoin.get(Publisher_.publisherName), "%" + bookSearchDto.getPublisherNameLike() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(publisherJoin.get(Publisher_.publisherName)),
+                        "%" + bookSearchDto.getPublisherNameLike().toLowerCase() + "%"));
             }
             if(StringUtils.isNotBlank(bookSearchDto.getAuthorNameLike())) {
-                predicates.add(criteriaBuilder.like(authorJoin.get(Author_.authorName), "%" + bookSearchDto.getAuthorNameLike() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(authorJoin.get(Author_.authorName)),
+                        "%" + bookSearchDto.getAuthorNameLike().toLowerCase() + "%"));
             }
             if(StringUtils.isNotBlank(bookSearchDto.getGenreNameLike())) {
-                predicates.add(criteriaBuilder.like(genreJoin.get(Genre_.genreName), "%" + bookSearchDto.getGenreNameLike() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(genreJoin.get(Genre_.genreName)),
+                        "%" + bookSearchDto.getGenreNameLike().toLowerCase() + "%"));
             }
 
             // in queries
