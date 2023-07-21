@@ -2,6 +2,14 @@ package com.bookstore.booksapiservice.controller;
 
 import java.util.List;
 
+import com.bookstore.booksapiservice.model.Author;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,35 +34,75 @@ public class PublisherController {
 
     private PublisherService publisherService;
 
+    @Operation(summary = "Create a new publisher")
+    @ApiResponses(value =
+            {@ApiResponse(responseCode = "201", description = "created", content = @Content(mediaType = "application/json",schema = @Schema(implementation = Publisher.class))),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
     @PostMapping()
-    public ResponseEntity<Publisher> save(@RequestBody PublisherSaveDto publisherSaveDto) {
+    public ResponseEntity<Publisher> save(@Parameter(description = "create a new publisher", required = true)
+                                              @RequestBody PublisherSaveDto publisherSaveDto) {
         return new ResponseEntity<>(publisherService.save(publisherSaveDto), HttpStatus.CREATED);
     }
-    
+
+    @Operation(summary = "Find all publishers")
+    @ApiResponses(value =
+            {@ApiResponse(responseCode = "200", description = "successful", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Publisher.class)))),
+                    @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
     @GetMapping()
     public ResponseEntity<List<Publisher>> findAll() {
         return ResponseEntity.ok().body(publisherService.findAll());
     }
 
+    @Operation(summary = "Find publisher by id")
+    @ApiResponses(value =
+            {@ApiResponse(responseCode = "200", description = "successful", content = @Content(schema = @Schema(implementation = Publisher.class))),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "publisher not found", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
     @GetMapping("{id}")
-    public ResponseEntity<Publisher> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Publisher> findById(@Parameter(description = "publisher id", required = true)
+                                                  @PathVariable("id") Integer id) {
         return ResponseEntity.ok().body(publisherService.findById(id));
     }
 
+    @Operation(summary = "Update publisher")
+    @ApiResponses(value =
+            {@ApiResponse(responseCode = "200", description = "successful", content = @Content(schema = @Schema(implementation = Author.class))),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "publisher not found", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
     @PutMapping("{id}")
-    public ResponseEntity<Publisher> update(@PathVariable("id") Integer id, @RequestBody PublisherSaveDto publisherSaveDto) {
+    public ResponseEntity<Publisher> update(@Parameter(description = "publisher id", required = true)
+                                                @PathVariable("id") Integer id,
+                                            @Parameter(description = "update publisher", required = true)
+                                            @RequestBody PublisherSaveDto publisherSaveDto) {
         publisherSaveDto.setId(id);
         return new ResponseEntity<>(publisherService.update(id, publisherSaveDto), HttpStatus.OK);
     }
 
+    @Operation(summary = "Mark publisher as deleted")
+    @ApiResponses(value =
+            {@ApiResponse(responseCode = "204", description = "no content", content = @Content),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "publisher not found", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> softDelete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> softDelete(@Parameter(description = "publisher id", required = true)
+                                               @PathVariable("id") Integer id) {
         publisherService.softDelete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Delete publisher")
+    @ApiResponses(value =
+            {@ApiResponse(responseCode = "204", description = "no content", content = @Content),
+                    @ApiResponse(responseCode = "400", description = "invalid input", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "publisher not found", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> hardDelete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> hardDelete(@Parameter(description = "publisher id", required = true)
+                                               @PathVariable("id") Integer id) {
         publisherService.hardDelete(id);
         return ResponseEntity.noContent().build();
     }

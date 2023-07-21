@@ -1,6 +1,7 @@
 package com.bookstore.booksapiservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -20,12 +21,14 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Author {
 
+    @Schema(name = "Author id", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_sequence")
     @SequenceGenerator(name = "author_sequence", sequenceName = "author_sequence", initialValue = 176, allocationSize = 1)
     @Column(name = "author_id")
     private Integer id;
 
+    @Schema(name = "Author name", example = "F. Scott Fitzgerald")
     @NotBlank(message = "author name is required")
     @Column(unique = true)
     private String authorName;
