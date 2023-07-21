@@ -1,13 +1,6 @@
 package com.bookstore.booksapiservice.model;
 
-import java.sql.Date;
-import java.time.Instant;
-import java.util.List;
-
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.sql.Date;
+import java.time.Instant;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -62,7 +61,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     @Valid
-    private List<Author> authors;
+    private Set<Author> authors;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "book_genre",
@@ -70,7 +69,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     @Valid
-    private List<Genre> genres;
+    private Set<Genre> genres;
 
     @CreationTimestamp()
     @Builder.Default

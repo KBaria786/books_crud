@@ -6,6 +6,8 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 public class UniqueGenreNameValidator implements ConstraintValidator<UniqueGenreNameConstraint, GenreSaveDto> {
 
@@ -18,9 +20,9 @@ public class UniqueGenreNameValidator implements ConstraintValidator<UniqueGenre
 
     @Override
     public boolean isValid(GenreSaveDto genreSaveDto, ConstraintValidatorContext constraintValidatorContext) {
-        return !genreRepository.findByGenreNameIgnoreCase(genreSaveDto.getGenreName())
-                .filter(genre -> genre.getId() != genreSaveDto.getId())
-                .isPresent();
+        return genreRepository.findByGenreNameIgnoreCase(genreSaveDto.getGenreName())
+                .filter(genre -> !genre.getId().equals(genreSaveDto.getId()))
+                .isEmpty();
     }
 
 }

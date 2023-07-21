@@ -18,9 +18,9 @@ public class UniqueAuthorNameValidator implements ConstraintValidator<UniqueAuth
 
     @Override
     public boolean isValid(AuthorSaveDto authorSaveDto, ConstraintValidatorContext constraintValidatorContext) {
-        return !authorRepository.findByAuthorNameIgnoreCase(authorSaveDto.getAuthorName())
-                .filter(author -> author.getId() != authorSaveDto.getId())
-                .isPresent();
+        return authorRepository.findByAuthorNameIgnoreCase(authorSaveDto.getAuthorName())
+                .filter(author -> !(author.getId().equals(authorSaveDto.getId())))
+                .isEmpty();
     }
 
 }

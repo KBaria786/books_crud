@@ -5,8 +5,8 @@ import com.bookstore.booksapiservice.model.Author;
 import com.bookstore.booksapiservice.repository.AuthorRepository;
 import com.bookstore.booksapiservice.validator.group.OnSave;
 import com.bookstore.booksapiservice.validator.group.OnUpdate;
-
 import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -37,11 +38,14 @@ public class AuthorService {
     }
 
     public Author findById(int id) {
-        return authorRepository.findById(id).orElseThrow(null);
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("author with id %d not found", id)));
     }
 
-    public List<Author> findAllById(Set<Integer> authorIds) {
-        return authorIds.stream().map(id -> findById(id)).toList();
+    public Set<Author> findAllById(Set<Integer> authorIds) {
+        return authorIds.stream()
+                .map(this::findById)
+                .collect(Collectors.toSet());
     }
 
     @Validated(OnUpdate.class)
@@ -58,6 +62,16 @@ public class AuthorService {
         Author author = findById(id);
         author.setDeleted(true);
         authorRepository.save(author);
+    }
+
+    @Transactional
+    public void hardDelete(Integer id) {
+        if(authorRepository.existsById(id)) {
+            authorRepository.deleteFromBookAuthors(id);
+            authorRepository.deleteById(id);
+        }else {
+            throw new EntityNotFoundException(String.format("author with id %d not found", id));
+        }
     }
 
 }
