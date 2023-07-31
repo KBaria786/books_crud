@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<div class="container-fluid">
+    <mat-card class="m-3">
+        <mat-card-actions>
+            <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+                <a mat-tab-link *ngFor="let link of links"
+                   (click)="activeLink = link"
+                   [active]="activeLink == link"> {{link}} </a>
+            </nav>
+        </mat-card-actions>
+        <mat-card-content>
+            <mat-tab-nav-panel #tabPanel>
+                <ng-container *ngIf="activeLink === 'Books'">
+                    <app-book-list></app-book-list>
+                </ng-container>
+                <ng-container *ngIf="activeLink === 'Authors'">
+                    <app-author-list></app-author-list>
+                </ng-container>
+                <ng-container *ngIf="activeLink === 'Genres'">
+                    <app-genre-list></app-genre-list>
+                </ng-container>
+                <ng-container *ngIf="activeLink === 'Publishers'">
+                    <app-publisher-list></app-publisher-list>
+                </ng-container>
+            </mat-tab-nav-panel>
+        </mat-card-content>
+    </mat-card>
+</div>

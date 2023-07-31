@@ -1,0 +1,75 @@
+<table mat-table [dataSource]="dataSource" class="table align-middle table-striped table-sm">
+    <!--id column-->
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>id</th>
+        <td mat-cell *matCellDef="let book"> {{book.id}} </td>
+    </ng-container>
+
+    <!--title column-->
+    <ng-container matColumnDef="isbn13">
+        <th mat-header-cell *matHeaderCellDef>isbn13</th>
+        <td mat-cell *matCellDef="let book" class="text-nowrap"> {{book.isbn13}} </td>
+    </ng-container>
+
+    <!--title column-->
+    <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>title</th>
+        <td mat-cell *matCellDef="let book" class="w-25"> {{book.title}} </td>
+    </ng-container>
+
+    <!--publication date column-->
+    <ng-container matColumnDef="publicationDate">
+        <th mat-header-cell *matHeaderCellDef>publication date</th>
+        <td mat-cell *matCellDef="let book"> {{book.publicationDate}} </td>
+    </ng-container>
+
+    <!--authors column-->
+    <ng-container matColumnDef="authors">
+        <th mat-header-cell *matHeaderCellDef>authors</th>
+        <td mat-cell *matCellDef="let book" style="width: 20%;">
+            <ul>
+                <li *ngFor="let author of book.authors" class="mb-0 p-0">
+                    {{author.authorName}}
+                </li>
+            </ul>
+        </td>
+    </ng-container>
+
+    <!--genres column-->
+    <ng-container matColumnDef="genres">
+        <th mat-header-cell *matHeaderCellDef>genres</th>
+        <td mat-cell *matCellDef="let book">
+            <ul>
+                <li *ngFor="let genre of book.genres" class="mb-0">
+                    {{genre.genreName}}
+                </li>
+            </ul>
+        </td>
+    </ng-container>
+
+    <!--publisher column-->
+    <ng-container matColumnDef="publisher">
+        <th mat-header-cell *matHeaderCellDef>publisher</th>
+        <td mat-cell *matCellDef="let book"> {{book.publisher.publisherName}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+</table>
+<!-- <div class="d-flex justify-content-center">
+    <mat-spinner *ngIf="spinnerLoading" color="accent"></mat-spinner>
+</div> -->
+<div *ngIf="spinnerLoading" class="d-flex justify-content-center">
+    <div class="spinner-border text-warning m-5" role="status" style="width: 5rem; height: 5rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<mat-paginator [length]="resultsLength"
+              [pageSize]="10"
+              [pageSizeOptions]="[10, 15, 20]"
+              [showFirstLastButtons]="true"
+              aria-label="Select page">
+</mat-paginator>
+
