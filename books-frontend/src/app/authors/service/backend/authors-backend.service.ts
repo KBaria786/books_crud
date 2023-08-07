@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Author } from '../../model/author';
 import { Observable } from 'rxjs';
@@ -20,6 +20,14 @@ export class AuthorsBackendService {
   //find all authors
   findAll() : Observable<Author[]> {
     return this.http.get<Author[]>(this.baseUrl);
+  }
+
+  //find all authors with pagination
+  findAllWithPagination(page : number, limit : number) : Observable<HttpResponse<Author[]>> {
+    let httpParams : HttpParams = new HttpParams();
+    httpParams = httpParams.append("page", page >= 0 ? page : 0);
+    httpParams = httpParams.append("limit", limit >= 0 ? limit : 10);
+    return this.http.get<Author[]>(`${this.baseUrl}/paginated`, {params : httpParams, observe : "response"});
   }
 
   //find author by id

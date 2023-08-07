@@ -1,7 +1,7 @@
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Genre } from '../../model/genre';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Genre } from '../../model/genre';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,14 @@ export class GenresBackendService {
   //find all genres
   findAll() : Observable<Genre[]> {
     return this.http.get<Genre[]>(this.baseUrl);
+  }
+
+  //find all genres with pagination
+  findAllWithPagination(page : number, limit : number) : Observable<HttpResponse<Genre[]>> {
+    let httpParams : HttpParams = new HttpParams();
+    httpParams = httpParams.append("page", page >= 0 ? page : 0);
+    httpParams = httpParams.append("limit", limit >= 0 ? limit : 10);
+    return this.http.get<Genre[]>(`${this.baseUrl}/paginated`, {params : httpParams, observe : "response"});
   }
 
   //find genre by id

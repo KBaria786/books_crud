@@ -30,8 +30,6 @@ export class BookListComponent implements AfterViewInit {
       switchMap(() => this.service.findAllWithPagination(this.paginator.pageIndex, this.paginator.pageSize)),
       map((response) => {
         let totalCount = response.headers.get("X-Total-Count");
-        console.log(response.headers);
-        
         this.resultsLength = totalCount ? +totalCount : 0;
         return response.body ? response.body : [];
       })
@@ -39,7 +37,8 @@ export class BookListComponent implements AfterViewInit {
       next: (books) => {
         this.dataSource = books;
         this.spinnerLoading = false;
-      }
+      },
+      complete : () => console.log("books fetched")
     });
   }
 

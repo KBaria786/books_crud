@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Publisher } from '../../model/publisher';
 import { Observable } from 'rxjs';
@@ -20,6 +20,14 @@ export class PublishersBackendService {
   //find all publishers
   findAll() : Observable<Publisher[]> {
     return this.http.get<Publisher[]>(this.baseUrl);
+  }
+
+  //find all publishers with pagination
+  findAllWithPagination(page : number, limit : number) : Observable<HttpResponse<Publisher[]>> {
+    let httpParams : HttpParams = new HttpParams();
+    httpParams = httpParams.append("page", page >= 0 ? page : 0);
+    httpParams = httpParams.append("limit", limit >= 0 ? limit : 10);
+    return this.http.get<Publisher[]>(`${this.baseUrl}/paginated`, {params : httpParams, observe : "response"});
   }
 
   //find publisher by id
