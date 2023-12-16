@@ -3,7 +3,7 @@
 A **Spring Boot** based **REST API** designed for managing a books database. The API interacts with an **H2 database**, providing functionalities for handling entities such as books, authors, genres and publishers. Validation and pagination mechanisms are implemented to ensure data integrity.
 
 ## Java version
-The project is designed to be compatible with **Java 20**. Ensure that you have Java version 20 or above installed on your system.
+The project is designed to be compatible with **Java 20**. Ensure that you have Java version 20 or above installed in your system.
 
 ## Lombok plugin
 Ensure that you have the lombook plugin installed in your IDE before working with this project. Lombok simplifies the code by reducing boilerplat, and its features are extensively used in this project.
