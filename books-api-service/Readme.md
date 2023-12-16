@@ -3,7 +3,7 @@
 A Spring Boot based REST API designed for managing a books database. The API interacts with an H2 database, providing functionalities for handling entities such as books, authors, genres and publishers. Validation and pagination mechanisms are implemented to ensure data integrity.
 
 ### Lombok plugin
-Ensure that you have the lombook plugin installed in your IDE before working with this project. Lombok simplifies the code by reducing boilerplat, and its features are extensively used in this project.
+Ensure that you have the lombook plugin installed in your IDE before working with this project. Lombok simplifies the code by reducing boilerplate, and its features are extensively used in this project.
 
 ### JPA metamodel generation
 Before running the Spring Boot application, ensure you run the following Maven command:
