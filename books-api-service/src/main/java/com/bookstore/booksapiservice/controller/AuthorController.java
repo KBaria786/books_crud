@@ -43,7 +43,7 @@ public class AuthorController {
     @ApiResponses(value =
             {@ApiResponse(responseCode = "200", description = "successful", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Author.class)))),
             @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
-    @GetMapping()
+    @GetMapping("paginated")
     public ResponseEntity<List<Author>> findAll(@Parameter(name = "page", description = "page")
                                                     @Min(value = 0, message = "page should be greater than or equal to 0")
                                                         @RequestParam(name = "page", required = false) Integer page,
@@ -57,7 +57,7 @@ public class AuthorController {
     @ApiResponses(value =
             {@ApiResponse(responseCode = "200", description = "successful", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Author.class)))),
                     @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
-    @GetMapping("paginated")
+    @GetMapping()
     public ResponseEntity<List<Author>> findAll() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("X-Total-Count", authorService.getTotalCount().toString());

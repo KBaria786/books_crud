@@ -2,7 +2,23 @@ package com.bookstore.booksapiservice.controller;
 
 import java.util.List;
 
-import com.bookstore.booksapiservice.model.Author;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bookstore.booksapiservice.dto.PublisherSaveDto;
+import com.bookstore.booksapiservice.model.Publisher;
+import com.bookstore.booksapiservice.service.PublisherService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -11,15 +27,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Min;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.bookstore.booksapiservice.dto.PublisherSaveDto;
-import com.bookstore.booksapiservice.model.Publisher;
-import com.bookstore.booksapiservice.service.PublisherService;
-
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -53,7 +60,7 @@ public class PublisherController {
     @ApiResponses(value =
             {@ApiResponse(responseCode = "200", description = "successful", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Publisher.class)))),
                     @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
-    @GetMapping()
+    @GetMapping("paginated")
     public ResponseEntity<List<Publisher>> findAll(@Parameter(name = "page", description = "page")
                                                        @Min(value = 0, message = "page should be greater than or equal to 0")
                                                             @RequestParam(name = "page", required = false) Integer page,
@@ -79,7 +86,7 @@ public class PublisherController {
 
     @Operation(summary = "Update publisher")
     @ApiResponses(value =
-            {@ApiResponse(responseCode = "200", description = "successful", content = @Content(schema = @Schema(implementation = Author.class))),
+            {@ApiResponse(responseCode = "200", description = "successful", content = @Content(schema = @Schema(implementation = Publisher.class))),
                     @ApiResponse(responseCode = "400", description = "invalid input", content = @Content),
                     @ApiResponse(responseCode = "404", description = "publisher not found", content = @Content),
                     @ApiResponse(responseCode = "500", description = "internal server error", content = @Content)})
