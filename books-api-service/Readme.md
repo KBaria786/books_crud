@@ -1,11 +1,14 @@
 # books-api-service
 
-A Spring Boot based REST API designed for managing a books database. The API interacts with an H2 database, providing functionalities for handling entities such as books, authors, genres and publishers. Validation and pagination mechanisms are implemented to ensure data integrity.
+A **Spring Boot** based **REST API** designed for managing a books database. The API interacts with an **H2 database**, providing functionalities for handling entities such as books, authors, genres and publishers. Validation and pagination mechanisms are implemented to ensure data integrity.
 
-### Lombok plugin
-Ensure that you have the lombook plugin installed in your IDE before working with this project. Lombok simplifies the code by reducing boilerplate, and its features are extensively used in this project.
+## Java version
+The project is designed to be compatible with **Java 20**. Ensure that you have Java version 20 or above installed on your system.
 
-### JPA metamodel generation
+## Lombok plugin
+Ensure that you have the lombook plugin installed in your IDE before working with this project. Lombok simplifies the code by reducing boilerplat, and its features are extensively used in this project.
+
+## JPA metamodel generation
 Before running the Spring Boot application, ensure you run the following Maven command:
 ```
 mvn clean install
@@ -18,13 +21,14 @@ Explore and interact with the API using Swagger documentation. Once the applicat
 http://http://localhost:8080/swagger-ui/index.html
 ```
 
-## books
+## Books
 Request endpoints to interact with books.
 
 ## Find book by id
 ### Request:
+``GET /books/{id}``
 ```
-http://localhost:8080/books/{id}
+http://localhost:8080/books/1
 ```
 ### Response:
 ```
@@ -59,8 +63,9 @@ http://localhost:8080/books/{id}
 
 ## Update book by id
 ### Request:
+``PUT /books/{id}``
 ```
-http://localhost:8080/books/{id}
+http://localhost:8080/books/1
 ```
 ### Request Body:
 ```
@@ -112,16 +117,19 @@ http://localhost:8080/books/{id}
 ```
 ## Mark book as deleted
 ## Request:
+``DELETE /books/{id}``
 ```
-http://localhost:8080/books/{id}
+http://localhost:8080/books/1
 ```
 ## Delete book
 ## Request:
+``DELETE /books/{id}``
 ```
-http://localhost:8080/books/{id}
+http://localhost:8080/books/1
 ```
 ## Find all books
 ## Request:
+``GET /books``
 ```
 http://localhost:8080/books
 ```
@@ -159,6 +167,7 @@ http://localhost:8080/books
 ```
 ## Create a new book
 ## Request:
+``POST /books/``
 ```
 http://localhost:8080/books
 ```
@@ -211,6 +220,7 @@ http://localhost:8080/books
 ```
 ## Filter books
 ## Request:
+``GET /books/search?{parameter_name}={parameter_value}``
 ```
 http://localhost:8080/books/search?genre_name=Fiction&title_like=The
 ```
@@ -395,6 +405,7 @@ http://localhost:8080/books/search?genre_name=Fiction&title_like=The
 ```
 ## Find all books with pagination
 ## Request:
+``GET /books/paginated?page={page_number}&limit={result_limit}``
 ```
 http://localhost:8080/books/paginated?page=2&limit=5
 ```
@@ -547,6 +558,360 @@ http://localhost:8080/books/paginated?page=2&limit=5
     "createdAt": "2023-05-09T23:42:04Z",
     "updatedAt": "2023-05-09T23:42:04Z",
     "deleted": false
+  }
+]
+```
+
+## Authors
+Request endpoints to interact with authors.
+## Find an author by id.
+### Request:
+``GET /authors/{id}``
+```
+http://localhost:8080/authors/1
+```
+### Response:
+```
+{
+  "Author id": 1,
+  "Author name": "F. Scott Fitzgerald"
+}
+```
+
+## Update an author
+### Request:
+``PUT /authors/{id}``
+```
+http://localhost:8080/authors/1
+```
+### Request Body:
+```
+{
+  "Author name": "F. Scott Fitzgerald"
+}
+```
+### Response:
+```
+{
+  "Author id": 1,
+  "Author name": "F. Scott Fitzgerald"
+}
+```
+
+## Mark an author as deleted
+### Request:
+`` DELETE /authors/{id}``
+```
+http://localhost:8080/authors/1
+```
+
+## Delete an author
+### Request:
+`` DELETE /authors/{id}``
+```
+http://localhost:8080/authors/1
+```
+
+## Find all authors
+### Request:
+``GET /authors/``
+```
+http://localhost:8080/authors
+```
+### Response:
+```
+[
+  {
+    "Author id": 1,
+    "Author name": "F. Scott Fitzgerald"
+  }
+]
+```
+
+## Create new author
+### Request:
+``POST /authors/``
+```
+http://localhost:8080/authors
+```
+### Request Body:
+```
+{
+  "Author name": "F. Scott Fitzgerald"
+}
+```
+### Response:
+```
+{
+  "Author id": 1,
+  "Author name": "F. Scott Fitzgerald"
+}
+```
+
+## Find all authors with pagination
+### Request:
+`` GET /authors/paginated?page={page_number}&limit={result_limit}``
+```
+http://localhost:8080/authors/paginated?page=2&limit=5
+```
+### Response:
+```
+[
+  {
+    "id": 11,
+    "authorName": "Rebecca Skloot"
+  },
+  {
+    "id": 12,
+    "authorName": "Malcolm Gladwell"
+  },
+  {
+    "id": 13,
+    "authorName": "Stephen Covey"
+  },
+  {
+    "id": 14,
+    "authorName": "Susan Cain"
+  },
+  {
+    "id": 15,
+    "authorName": "Michelle Alexander"
+  }
+]
+```
+
+## Genres
+Request endpoints to interact with genres.
+## Find genre by id.
+### Request:
+``GET /genres/{id}``
+```
+http://localhost:8080/genres/1
+```
+### Response:
+```
+{
+  "Genre id": 1,
+  "Genre name": "Fiction"
+}
+```
+
+## Update an genre
+### Request:
+``PUT /genres/{id}``
+```
+http://localhost:8080/genres/1
+```
+### Request Body:
+```
+{
+  "Genre name": "Fiction"
+}
+```
+### Response:
+```
+{
+  "Genre id": 1,
+  "Genre name": "Fiction"
+}
+```
+
+## Mark a genre as deleted
+### Request:
+``DELETE /genres/{id}``
+```
+http://localhost:8080/genres/1
+```
+
+## Delete a genre
+### Request:
+``DELETE /genres/{id}``
+```
+http://localhost:8080/genres/1
+```
+
+## Find all genres
+### Request:
+``GET /genres/``
+```
+http://localhost:8080/genres
+```
+### Response:
+```
+[
+  {
+    "Genre id": 1,
+    "Genre name": "Fiction"
+  }
+]
+```
+
+## Create new genre
+### Request:
+``POST /genres/``
+```
+http://localhost:8080/genres
+```
+### Request Body:
+```
+{
+  "Genre name": "Fiction"
+}
+```
+### Response:
+```
+{
+  "Genre id": 1,
+  "Genre name": "Fiction"
+}
+```
+
+## Find all genres with pagination
+### Request:
+``GET /genres/paginated?page={page_number}&limit={result_limit}``
+```
+http://localhost:8080/genres/paginated?page=2&limit=5
+```
+### Response:
+```
+[
+  {
+    "id": 11,
+    "genreName": "Young Adult"
+  },
+  {
+    "id": 12,
+    "genreName": "Horror"
+  },
+  {
+    "id": 13,
+    "genreName": "Humor"
+  },
+  {
+    "id": 14,
+    "genreName": "Historical Fiction"
+  },
+  {
+    "id": 15,
+    "genreName": "Children's"
+  }
+]
+```
+
+## Publishers
+Request endpoints to interact with publishers.
+## Find publisher by id.
+### Request:
+``GET /publishers/{id}``
+```
+http://localhost:8080/publishers/22
+```
+### Response:
+```
+{
+  "Publisher id": 22,
+  "Publisher name": "Schmidt, Reilly and Sawayn"
+}
+```
+
+## Update a publisher
+### Request:
+``PUT /publishers/{id}``
+```
+http://localhost:8080/publishers/22
+```
+### Request Body:
+```
+{
+  "Publisher name": "Schmidt, Reilly and Sawayn"
+}
+```
+### Response:
+```
+{
+  "Publisher id": 22,
+  "Publisher name": "Schmidt, Reilly and Sawayn"
+}
+```
+
+## Mark a publisher as deleted
+### Request:
+``DELETE /publishers/{id}``
+```
+http://localhost:8080/publishers/1
+```
+
+## Delete a publisher
+### Request:
+``DELETE /publishers/{id}``
+```
+http://localhost:8080/publishers/1
+```
+
+## Find all publishers
+### Request:
+``GET /publishers/``
+```
+http://localhost:8080/publishers
+```
+### Response:
+```
+[
+  {
+    "Publisher id": 22,
+    "Publisher name": "Schmidt, Reilly and Sawayn"
+  }
+]
+```
+
+## Create new publisher
+### Request:
+``POST /publishers/``
+```
+http://localhost:8080/publishers
+```
+### Request Body:
+```
+{
+  "Publisher name": "Schmidt, Reilly and Sawayn"
+}
+```
+### Response:
+```
+{
+  "Publisher id": 22,
+  "Publisher name": "Schmidt, Reilly and Sawayn"
+}
+```
+
+## Find all publishers with pagination
+### Request:
+``GET /publishers/paginated?page={page_number}&limit={result_limit}``
+```
+http://localhost:8080/publishers/paginated?page=2&limit=5
+```
+### Response:
+```
+[
+  {
+    "id": 11,
+    "publisherName": "Altenwerth, Hackett and Moore"
+  },
+  {
+    "id": 12,
+    "publisherName": "Ernser, Parker and VonRueden"
+  },
+  {
+    "id": 13,
+    "publisherName": "Schumm LLC"
+  },
+  {
+    "id": 14,
+    "publisherName": "Pacocha-Rodriguez"
+  },
+  {
+    "id": 15,
+    "publisherName": "Feil LLC"
   }
 ]
 ```
